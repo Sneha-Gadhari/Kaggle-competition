@@ -1,79 +1,78 @@
-Heart Disease Prediction 
+# Heart Disease Prediction
+Binary classification project for predicting heart disease using structured tabular data.
 
-Objective
-The objective of this project is to predict the probability of heart disease presence using structured tabular clinical data. This is a binary classification problem.
+## Overview
+This project was developed for the Kaggle Playground Series Season 6 Episode 2 competition.
+The goal is to predict the probability of heart disease using 13 numerical clinical features.
+- Train samples: 630,000
+- Test samples: 270,000
+- Features: 13 
+- Target: Heart Disease (0 = Absence, 1 = Presence)
 
-Evaluation metrics:
-Log Loss (academic requirement)
-ROC-AUC (competition ranking metric)
+## Exploratory Data Analysis
+- Checked data types and dataset shape
+- Verified no missing values
+- Analyzed target distribution
+- Visualized class balance
+The dataset is moderately balanced.
 
-Dataset Overview
-Training samples: 630,000
-Test samples: 270,000
-Features: 13 numerical features
-Target column: Heart Disease
-Absence → 0
-Presence → 1
-All features are numerical (int64 / float64). No categorical encoding was required.
+## Validation Strategy
+Stratified 5-Fold Cross Validation was used to maintain class distribution across folds.
+- n_splits = 5
+- shuffle = True
+- random_state = 42
+Out-of-fold (OOF) predictions were generated to compute unbiased Log Loss and ROC-AUC.
 
-Preprocessing
-Converted target labels:
-Absence → 0
-Presence → 1
-Verified:
-No missing values
-Proper class distribution
-Applied:
-Stratified 5-Fold Cross Validation
-No scaling required (tree-based models)
-
-Cross-Validation Strategy
-StratifiedKFold
-n_splits = 5
-shuffle = True
-random_state = 42
-Stratification ensures each fold maintains the same class distribution.
-
-Models Implemented and Submitted
-1. XGBoost
-Gradient boosting framework optimized for performance and efficiency.
-2. LightGBM
-Highly efficient gradient boosting model suitable for large tabular datasets.
-3. CatBoost
-Gradient boosting model with strong regularization and stable performance.
-
-Cross-Validation Results
-Model	CV Log Loss	CV ROC-AUC
-XGBoost	0.2681	0.9553
-LightGBM	0.2686	0.9552
-CatBoost	(Add your score here)	(Add your score here)
-
-Observation:
-All three boosting models perform very closely. XGBoost achieved the best overall CV performance in this experiment.
-Evaluation Metrics Explained
-Log Loss
-Measures how well predicted probabilities match true labels. Lower is better.
-ROC-AUC
-Measures the model’s ability to distinguish between classes. Higher is better.
-
-ROC Curve Analysis
-Separate ROC curves were plotted for:
+## Models Implemented
+Logistic Regression (Baseline)
+Used as a linear baseline model.
 XGBoost
+- 800 estimators
+- learning_rate = 0.05
+- max_depth = 5
+- subsample = 0.8
+- colsample_bytree = 0.8
 LightGBM
+- 800 estimators
+- learning_rate = 0.05
+- num_leaves = 31
+- subsample = 0.8
+- colsample_bytree = 0.8
 CatBoost
-The curves show strong separation between positive and negative classes across all models.
+- 800 iterations
+- learning_rate = 0.05
+- depth = 6
+- loss_function = Logloss
+All boosting models used 5-fold averaging for final test predictions.
 
-Submission Files
-Submission files were generated separately for:
-XGBoost
-LightGBM
-CatBoost
-Each file contains:
-id
-Heart Disease (predicted probability)
+## Cross-Validation Results
+Model	              CV Log Loss	     CV ROC-AUC
+Logistic Regression	0.2818	         0.9505
+XGBoost	            0.2681	         0.9553
+LightGBM	          0.2686	         0.9552
+CatBoost	          0.2677	         0.9554
 
-Conclusion
-Gradient boosting models perform strongly on structured tabular data.
-Proper cross-validation ensures reliable performance estimation.
-XGBoost currently provides the best cross-validation performance.
-Multiple models were trained and compared before final submission.
+## Kaggle Leaderboard (ROC-AUC)
+Model	     Public Score
+XGBoost	   0.95349
+LightGBM	 0.95339
+CatBoost	 0.95353
+CatBoost achieved the best public leaderboard score.
+
+## Visualizations
+- Combined ROC Curve comparison
+- Individual ROC curves for each model
+
+## Submission Files
+- submission_xgb.csv
+- submission_lgb.csv
+- submission_cat.csv
+Each submission contains:
+- id
+- Predicted probability of heart disease
+
+## Key Takeaways
+- Gradient boosting models outperform linear models on structured tabular data.
+- Proper cross-validation is essential for reliable performance estimation.
+- All three boosting models perform very closely.
+- CatBoost provided the best leaderboard result in this experiment.
